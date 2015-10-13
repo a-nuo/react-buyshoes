@@ -112,7 +112,7 @@ let SiteTitle = React.createClass({
 /*数量调整组件*/
 let QuantityControl = React.createClass({
   render: function() {
-  	let quantity = this.props.quantity;
+  	let quantity = this.props.item.quantity;
   	let variant = this.props.variant;
   	let className ="adjust-qty";
   	if(variant){
@@ -143,12 +143,9 @@ let AddCart = React.createClass({
 		}); 
 let Product = React.createClass({
   render: function() {
-	let {name,price,imagePath} = this.props.product;
-	let quantity = this.props.quantity;
-	let displayEle =<AddCart />;
-	if(quantity){
-		displayEle=<QuantityControl quantity={quantity} variant="gray"/>;
-	}
+	let {id,name,price,imagePath} = this.props.product;
+	let item = cartItems[this.props.product.id];
+	let displayEle =item ? <QuantityControl item={item} variant="gray"/> : (<a className = "product_add"><img className="product__add__icon" src="img/cart-icon.svg" /></a>);
 	
     return (
       <div className="product">
@@ -177,13 +174,11 @@ let Product = React.createClass({
 let Products = React.createClass({
 
 	render:function(){
-		let products =this.props.products ;
-		let cartItems = this.props.cartItems;
 		let children = [];
 
 		for(var product in products){
 			if(cartItems[product]){
-				children.push(<Product product={products[product]} key={product} quantity={cartItems[product].quantity}/>);
+				children.push(<Product product={products[product]} key={product} />);
 			}else {
 				children.push(<Product product={products[product]} key={product} />);
 			}
@@ -199,7 +194,6 @@ let Products = React.createClass({
 let CartItem = React.createClass({
   render: function() {
   	let {id,quantity} = this.props.cartItem;
-  	let products = this.props.products;
   	let  {name,price,imagePath} = products[id];
   	let priceStr = quantity>1?""+price+" x "+quantity:price;
     return (
@@ -218,7 +212,7 @@ let CartItem = React.createClass({
           </div>
           <img className="cart-item__trash" src="img/trash-icon.svg" />
         </div> {/* cart-item__top-part */}
-        <QuantityControl quantity={quantity}/>
+        <QuantityControl item={this.props.cartItem}/>
       </div>
     );
   }
@@ -230,11 +224,10 @@ let Cart = React.createClass({
 	},
 
 	render : function(){
-		let cartItems = this.props.cartItems;
 		let children = [];
 
-		for(var cartItem in cartItems){
-			children.push(<CartItem cartItem={cartItems[cartItem]} products={products} />);
+		for(var key in cartItems){
+			children.push(<CartItem cartItem={cartItems[key]} />);
 		}
 
 		return (
@@ -250,12 +243,10 @@ let Cart = React.createClass({
 
 let Checkout = React.createClass({
   render: function() {
-  	let products = this.props.products;
-  	let cartItems = this.props.cartItems;
   	let count = 0;
-  	for(var cartItem in cartItems){
+  	for(var key in cartItems){
 
-  		count+=products[cartItem].price * cartItems[cartItem].quantity;
+  		count+=products[key].price * cartItems[key].quantity;
 
   	}
   	count="$"+count;
@@ -296,13 +287,13 @@ let  App = React.createClass({
             <SiteTitle/>
           </div>
           <div className="site__content">
-          	<Products products={products} cartItems={cartItems}/>
+          	<Products />
             {/* <Products/> */}
           </div> {/* site__content */}
         </div> {/* site__main */}
         <div className="site__right-sidebar">
-        	<Cart cartItems={cartItems}/>
-        	<Checkout products={products} cartItems={cartItems} />
+        	<Cart />
+        	<Checkout />
           {/* <Cart/> */}
           {/* <Checkout/> */}
         </div> {/* site__right-sidebar */}

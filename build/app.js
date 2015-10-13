@@ -122,7 +122,7 @@ var QuantityControl = React.createClass({
   displayName: "QuantityControl",
 
   render: function render() {
-    var quantity = this.props.quantity;
+    var quantity = this.props.item.quantity;
     var variant = this.props.variant;
     var className = "adjust-qty";
     if (variant) {
@@ -170,15 +170,17 @@ var Product = React.createClass({
 
   render: function render() {
     var _props$product = this.props.product;
+    var id = _props$product.id;
     var name = _props$product.name;
     var price = _props$product.price;
     var imagePath = _props$product.imagePath;
 
-    var quantity = this.props.quantity;
-    var displayEle = React.createElement(AddCart, null);
-    if (quantity) {
-      displayEle = React.createElement(QuantityControl, { quantity: quantity, variant: "gray" });
-    }
+    var item = cartItems[this.props.product.id];
+    var displayEle = item ? React.createElement(QuantityControl, { item: item, variant: "gray" }) : React.createElement(
+      "a",
+      { className: "product_add" },
+      React.createElement("img", { className: "product__add__icon", src: "img/cart-icon.svg" })
+    );
 
     return React.createElement(
       "div",
@@ -220,13 +222,11 @@ var Products = React.createClass({
   displayName: "Products",
 
   render: function render() {
-    var products = this.props.products;
-    var cartItems = this.props.cartItems;
     var children = [];
 
     for (var product in products) {
       if (cartItems[product]) {
-        children.push(React.createElement(Product, { product: products[product], key: product, quantity: cartItems[product].quantity }));
+        children.push(React.createElement(Product, { product: products[product], key: product }));
       } else {
         children.push(React.createElement(Product, { product: products[product], key: product }));
       }
@@ -245,8 +245,6 @@ var CartItem = React.createClass({
     var _props$cartItem = this.props.cartItem;
     var id = _props$cartItem.id;
     var quantity = _props$cartItem.quantity;
-
-    var products = this.props.products;
     var _products$id = products[id];
     var name = _products$id.name;
     var price = _products$id.price;
@@ -281,7 +279,7 @@ var CartItem = React.createClass({
         React.createElement("img", { className: "cart-item__trash", src: "img/trash-icon.svg" })
       ),
       " ",
-      React.createElement(QuantityControl, { quantity: quantity })
+      React.createElement(QuantityControl, { item: this.props.cartItem })
     );
   }
 });
@@ -294,11 +292,10 @@ var Cart = React.createClass({
   },
 
   render: function render() {
-    var cartItems = this.props.cartItems;
     var children = [];
 
-    for (var cartItem in cartItems) {
-      children.push(React.createElement(CartItem, { cartItem: cartItems[cartItem], products: products }));
+    for (var key in cartItems) {
+      children.push(React.createElement(CartItem, { cartItem: cartItems[key] }));
     }
 
     return React.createElement(
@@ -322,12 +319,10 @@ var Checkout = React.createClass({
   displayName: "Checkout",
 
   render: function render() {
-    var products = this.props.products;
-    var cartItems = this.props.cartItems;
     var count = 0;
-    for (var cartItem in cartItems) {
+    for (var key in cartItems) {
 
-      count += products[cartItem].price * cartItems[cartItem].quantity;
+      count += products[key].price * cartItems[key].quantity;
     }
     count = "$" + count;
     return React.createElement(
@@ -381,7 +376,7 @@ var App = React.createClass({
         React.createElement(
           "div",
           { className: "site__content" },
-          React.createElement(Products, { products: products, cartItems: cartItems })
+          React.createElement(Products, null)
         ),
         " "
       ),
@@ -389,8 +384,8 @@ var App = React.createClass({
       React.createElement(
         "div",
         { className: "site__right-sidebar" },
-        React.createElement(Cart, { cartItems: cartItems }),
-        React.createElement(Checkout, { products: products, cartItems: cartItems })
+        React.createElement(Cart, null),
+        React.createElement(Checkout, null)
       ),
       " ",
       React.createElement(
