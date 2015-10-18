@@ -12,10 +12,9 @@ server:
 clean:
 	rm -r bundle
 
-.PHONY:	js
+.PHONY: js
 js:
-	babel --watch js/app.jsx --out-file build/app.js
-
+	webpack --watch js/app.jsx build/app.js --module-bind "jsx=babel" --module-bind "js=babel" --module-bind "css=style!css" --progress
 .PHONY:	all
 all:
 	(make css & make js & make server & wait)
