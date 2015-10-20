@@ -1,5 +1,5 @@
 const React = require("react");
-let {products,cartItem} = require("../data.js");
+let {products,cartItems} = require("../data");
 
 let Checkout = React.createClass({
   render: function() {
@@ -31,3 +31,5 @@ let Checkout = React.createClass({
     );
   }
 });
+
+module.exports = Checkout;

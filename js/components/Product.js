@@ -1,11 +1,11 @@
 const React = require("react");
-let QuantityControl = require("./QuantityControl.js");
-let {products,cartItems} = require("../data.js");
+let QuantityControl = require("./QuantityControl");
+let {products,cartItems} = require("../data");
 let Product = React.createClass({
   render: function() {
 	let {id,name,price,imagePath} = this.props.product;
 	let item = cartItems[this.props.product.id];
-	let displayEle =item ? <QuantityControl item={item} variant="gray"/> : (<a className = "product_add"><img className="product__add__icon" src="img/cart-icon.svg" /></a>);
+	let displayEle =item ? <QuantityControl item={item} variant="gray"/> : <a className = "product__add"><img className="product__add__icon" src="img/cart-icon.svg" /></a>;
 	
     return (
       <div className="product">

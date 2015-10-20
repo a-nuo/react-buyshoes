@@ -1,9 +1,9 @@
 /*产品全局变量*/
 
-const React = require("react");
-const Ps = require("perfect-scrollbar");
-let  App = require("./components/App.js");
+import  React from  "react";
+import Ps from "perfect-scrollbar";
+import   App from  "./components/App";
 
 window.onload = ()=>{
 	React.render(<App/>, document.querySelector("#root"));
-}
+};

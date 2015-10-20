@@ -20,3 +20,5 @@ let QuantityControl = React.createClass({
     );
   }
 });
+
+module.exports = QuantityControl;

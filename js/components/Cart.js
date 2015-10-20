@@ -1,7 +1,7 @@
 const React = require("react");
 const Ps = require("perfect-scrollbar");
-let {products,cartItems} = require("../data.js");
-let CartItem = require("./CartItem.js");
+let {products,cartItems} = require("../data");
+let CartItem = require("./CartItem");
 let Cart = React.createClass({
 	componentDidMount(){
 		let $content = React.findDOMNode(this.refs.cart__content);
@@ -17,11 +17,15 @@ let Cart = React.createClass({
 
 		return (
 				<div className="cart">
+				<h3 className="cart__title">Shopping Cart</h3>
 			      <div className="cart__content" ref="cart__content">
-			        <h3 className="cart__title cart__title--spacer">Shopping Cart</h3>
 			        {children}
 			      </div>  
         		</div>
 			);
 	}
 });
+
+
+
+module.exports = Cart;

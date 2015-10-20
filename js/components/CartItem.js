@@ -1,6 +1,6 @@
 const React = require("react");
-let {products,cartItem} = require("../data.js");
-let QuantityControl = require("./QuantityControl.js");
+let {products,cartItems} = require("../data");
+let QuantityControl = require("./QuantityControl");
 let CartItem = React.createClass({
   render: function() {
   	let {id,quantity} = this.props.cartItem;
@@ -27,3 +27,5 @@ let CartItem = React.createClass({
     );
   }
 });
+
+module.exports = CartItem;

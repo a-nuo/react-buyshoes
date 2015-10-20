@@ -1,8 +1,8 @@
 const React = require("react");
-let SiteTitle = require("./SiteTitle.js");
-let Products = require("./Products.js");
-let Cart = require("./Cart.js");
-let Checkout = require("./Checkout.js");
+let SiteTitle = require("./SiteTitle");
+let Products = require("./Products");
+let Cart = require("./Cart");
+let Checkout = require("./Checkout");
 
 let App = React.createClass({
 	render() {
